@@ -3,6 +3,9 @@ import os
 import shutil
 import subprocess
 import tarfile
+from sys import argv
+from getpass import getpass
+import requests
 
 splunk_app_name = os.path.basename(os.getcwd())
 
@@ -61,3 +64,26 @@ print_header('Cleaning up...')
 shutil.rmtree(splunk_app_name)
 
 print_header('Created {0}.tar.gz successfully!'.format(splunk_app_name))
+
+if len(argv) >= 2 and argv[1] == '--install-local':
+    print_header('Installing to local Splunk server...')
+    tar_path = os.path.abspath('{}.tar.gz'.format(splunk_app_name))
+    if len(argv) < 3:
+        splunk_username = raw_input('Splunk Username:\t')
+    else:
+        splunk_username = argv[2]
+    if len(argv) < 4:
+        splunk_password = getpass('Splunk Password:\t')
+    else:
+        splunk_password = argv[3]
+    requests.post('https://localhost:8089/services/apps/local', auth=(splunk_username, splunk_password), data={
+        'name': tar_path,
+        'update': 'true',
+        'filename': 'true'
+    }, verify=False)
+
+    if '--restart' in argv:
+        print_header('Restarting Splunkd...')
+        requests.post('https://localhost:8089/services/server/control/restart', auth=(splunk_username, splunk_password),
+                      verify=False)
+        print_header('App will be available once Splunkd finishes restarting!')
