@@ -1,0 +1,6 @@
+venv/
+*.py[coa]
+.DS_Store
+.idea/
+TA-DataSnake.tar.gz
+TA-DataSnake/
