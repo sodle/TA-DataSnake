@@ -10,7 +10,6 @@ class Ouroboros(GeneratingCommand):
     query = Option(require=True)
 
     def generate(self):
-        self.logger.error(['datasnake', self.connection, self.query, '--output-format=json'])
         ds_proc = subprocess.Popen(['datasnake', self.connection, self.query,
                                     '--output-format=json'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         ds_out, ds_err = ds_proc.communicate()
