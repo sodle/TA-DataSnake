@@ -10,8 +10,8 @@ class VersionCheck(GeneratingCommand):
         ds_proc = subprocess.Popen(['datasnake', '--env'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         ds_out, ds_err = ds_proc.communicate()
         yield json.loads(ds_out)
-        for line in ds_err.split('\n'):
-            self.logger.error(line)
+        if len(ds_err) > 0:
+            raise RuntimeError(ds_err)
 
 
 dispatch(VersionCheck, sys.argv, sys.stdin, sys.stdout, __name__)
