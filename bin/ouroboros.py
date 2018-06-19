@@ -17,7 +17,7 @@ class Ouroboros(GeneratingCommand):
         if connection_string is None:
             raise KeyError('No such connection - {}'.format(self.connection))
 
-        ds_proc = subprocess.Popen(['datasnake', connection_string, self.query,
+        ds_proc = subprocess.Popen(['datasnake', connection_string.clear_password, self.query,
                                     '--output-format=json'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         ds_out, ds_err = ds_proc.communicate()
         for line in ds_out.split('\n'):
