@@ -1,8 +1,11 @@
+import splunklib
+
 realm_name = 'TA-DataSnake-Connection'
 
 
 class ConnectionManager(object):
     def __init__(self, service):
+        # type: (splunklib.service) -> None
         self.service = service
 
     def list(self):
