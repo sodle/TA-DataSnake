@@ -2,6 +2,7 @@ from splunklib.searchcommands import Configuration, GeneratingCommand, Option, d
 import sys
 import json
 import subprocess
+from util import ConnectionManager
 
 
 @Configuration(type='reporting')
@@ -10,15 +11,21 @@ class Ouroboros(GeneratingCommand):
     query = Option(require=True)
 
     def generate(self):
-        ds_proc = subprocess.Popen(['datasnake', self.connection, self.query,
+        connections = ConnectionManager(self.service)
+        connection_string = connections.get(self.connection)
+
+        if connection_string is None:
+            raise KeyError('No such connection - {}'.format(self.connection))
+
+        ds_proc = subprocess.Popen(['datasnake', connection_string, self.query,
                                     '--output-format=json'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         ds_out, ds_err = ds_proc.communicate()
         for line in ds_out.split('\n'):
             if line.startswith('ROW'):
                 _, _, db_row = line.split('\t')
                 yield json.loads(db_row)
-        for line in ds_err.split('\n'):
-            self.logger.error(line)
+        if len(ds_err) > 0:
+            raise RuntimeError(ds_err)
 
 
 dispatch(Ouroboros, sys.argv, sys.stdin, sys.stdout, __name__)
