@@ -24,14 +24,16 @@ class DataSnakeReadModularInput(Script):
             conn = conn_man.get(item['connection']).clear_password
             query = item['query']
             fmt = item['format']
-            ds_proc = subprocess.Popen(['datasnake', conn, query, '--output-format={}'.format(fmt)])
+            ds_proc = subprocess.Popen(['datasnake', conn, query, '--output-format={}'.format(fmt)],
+                                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             ds_out, ds_err = ds_proc.communicate()
             for line in ds_out.split('\n'):
                 if line.startswith('ROW'):
                     _, _, row = line.split('\t')
                     ew.write_event(Event(data=row, stanza=name, source=name, sourcetype='datasnake:{}'.format(fmt)))
             for line in ds_err.split('\n'):
-                ew.log('ERROR', 'DataSnake error: {}'.format(line))
+                if len(line) > 0:
+                    ew.log('ERROR', 'DataSnake error: {}'.format(line))
 
 
 if __name__ == '__main__':

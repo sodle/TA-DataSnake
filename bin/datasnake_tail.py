@@ -52,7 +52,8 @@ class DataSnakeTailModularInput(Script):
                     else:
                         check_man.update(name, checkpoint)
             for line in ds_err.split('\n'):
-                ew.log('ERROR', 'DataSnake error: {}'.format(line))
+                if len(line) > 0:
+                    ew.log('ERROR', 'DataSnake error: {}'.format(line))
 
 
 if __name__ == '__main__':
