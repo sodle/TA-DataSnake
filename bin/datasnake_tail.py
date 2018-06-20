@@ -1,6 +1,7 @@
 from splunklib.modularinput import Script, Scheme, Argument, Event
 import subprocess
 import sys
+from datetime import datetime
 from util import ConnectionManager, CheckpointManager
 
 
@@ -21,6 +22,10 @@ class DataSnakeTailModularInput(Script):
                                      validation='format = "dbx" OR format = "json"',  required_on_create=True)),
         return scheme
 
+    @staticmethod
+    def format_splunk_timestamp(time):
+        return datetime.strptime(time, '%s').strftime('%Y-%m-%d %H:%M:%S%z')
+
     def stream_events(self, inputs, ew):
         for name, item in inputs.inputs.iteritems():
             conn_man = ConnectionManager(self.service)
@@ -37,8 +42,9 @@ class DataSnakeTailModularInput(Script):
             ds_out, ds_err = ds_proc.communicate()
             for line in ds_out.split('\n'):
                 if line.startswith('ROW'):
-                    _, _, row = line.split('\t')
-                    ew.write_event(Event(data=row, stanza=name, source=name, sourcetype='datasnake:{}'.format(fmt)))
+                    _, time, row = line.split('\t')
+                    ew.write_event(Event(data=row, stanza=name, source=name, sourcetype='datasnake:{}'.format(fmt),
+                                         time=self.format_splunk_timestamp(time)))
                 if line.startswith('CHECKPOINT'):
                     _, checkpoint = line.split('\t')
                     if check is None:
