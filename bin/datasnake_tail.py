@@ -24,7 +24,7 @@ class DataSnakeTailModularInput(Script):
 
     @staticmethod
     def format_splunk_timestamp(time):
-        return datetime.strptime(time, '%s').strftime('%Y-%m-%d %H:%M:%S%z')
+        return datetime.utcfromtimestamp(int(time) / 1000000000).strftime('%s')
 
     def stream_events(self, inputs, ew):
         for name, item in inputs.inputs.iteritems():
@@ -43,6 +43,7 @@ class DataSnakeTailModularInput(Script):
             for line in ds_out.split('\n'):
                 if line.startswith('ROW'):
                     _, time, row = line.split('\t')
+                    ew.log('INFO', self.format_splunk_timestamp(time))
                     ew.write_event(Event(data=row, stanza=name, source=name, sourcetype='datasnake:{}'.format(fmt),
                                          time=self.format_splunk_timestamp(time)))
                 if line.startswith('CHECKPOINT'):
