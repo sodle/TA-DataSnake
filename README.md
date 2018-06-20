@@ -1,4 +1,5 @@
 # Fast and stable database connector for Splunk
+Goal is to create a replacement for Splunk DB Connect v3, which is slow and buggy in places. In order to accomplish this, we take advantage of a native agent program, [DataSnake Core](https://github.com/sodle/DataSnake-Core), written in Python. The TA communicates with the agent process in a predictable way through standard IO, allowing for potential drop-in replacements to be written created by other developers in other languages.
 
 ## Alpha
 DataSnake is currently in an alpha state. Known issues:
