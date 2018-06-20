@@ -8,7 +8,7 @@ connection = <value>
 query = <value>
 
 * Format of rows (JSON or classic DBX)
-format = <value>
+format = [json|dbx]
 
 
 [datasnake_tail://<name>]
@@ -24,4 +24,4 @@ query = <value>
 timestamp_column = <value>
 
 * Format of rows (JSON or classic DBX)
-format = <value>
+format = [json|dbx]
