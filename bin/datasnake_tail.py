@@ -38,7 +38,7 @@ class DataSnakeTailModularInput(Script):
             ds_args = ['datasnake', conn, query, '--output-format={}'.format(fmt), '--index={}'.format(ts_col)]
             if check is not None:
                 ds_args.append('--offset={}'.format(check.clear_password))
-            ds_proc = subprocess.Popen(ds_args)
+            ds_proc = subprocess.Popen(ds_args, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
             ds_out, ds_err = ds_proc.communicate()
             for line in ds_out.split('\n'):
                 if line.startswith('ROW'):
