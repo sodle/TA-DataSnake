@@ -1,4 +1,4 @@
-from splunklib.modularinput import Script, Scheme, Argument, Event
+from util.splunklib.modularinput import Script, Scheme, Argument, Event
 import subprocess
 import sys
 from util import ConnectionManager

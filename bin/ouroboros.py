@@ -1,4 +1,4 @@
-from splunklib.searchcommands import Configuration, GeneratingCommand, Option, dispatch
+from util.splunklib.searchcommands import Configuration, GeneratingCommand, Option, dispatch
 import sys
 import json
 import subprocess
