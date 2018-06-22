@@ -38,17 +38,17 @@ print(dirs_to_copy)
 for directory in dirs_to_copy:
     shutil.copytree(directory, os.path.join(splunk_app_name, directory))
 
-print_header('Installing Python dependencies...')
-pip_proc = subprocess.Popen(['pip', 'install', '-r',
-                             os.path.join('README', 'requirements.txt'),
-                             '--target=' + os.path.join(splunk_app_name, 'bin')],
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-pip_out, pip_err = pip_proc.communicate()
-if pip_proc.returncode != 0:
-    print(bcolors.FAIL + 'pip exited {}. Error:'.format(pip_proc.returncode) + bcolors.ENDC)
-    print(pip_err)
-    exit(pip_proc.returncode)
+# print_header('Installing Python dependencies...')
+# pip_proc = subprocess.Popen(['pip', 'install', '-r',
+#                              os.path.join('README', 'requirements.txt'),
+#                              '--target=' + os.path.join(splunk_app_name, 'bin')],
+#                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#
+# pip_out, pip_err = pip_proc.communicate()
+# if pip_proc.returncode != 0:
+#     print(bcolors.FAIL + 'pip exited {}. Error:'.format(pip_proc.returncode) + bcolors.ENDC)
+#     print(pip_err)
+#     exit(pip_proc.returncode)
 
 print_header('Cleaning up...')
 for root, dirs, files in os.walk(os.path.join(splunk_app_name, 'bin')):
