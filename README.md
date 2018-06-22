@@ -3,7 +3,7 @@ Goal is to create a replacement for Splunk DB Connect v3, which is slow and bugg
 
 ## Alpha
 DataSnake is currently in an alpha state. Known issues:
- * If DataSnake is installed alongside Splunk DB Connect, DB Connect's user interface breaks.
+ * ~~If DataSnake is installed alongside Splunk DB Connect, DB Connect's user interface breaks.~~ _[Fixed 6/23/2018]_
  * If the DataSnake Core is installed on Python 3 instead of Python 2, an error about the missing `setdefaultencoding` function is logged. This error appears to be harmless.
  * GUI for configuring connections, inputs, etc. is absent.
  * Timestamp columns are sometimes handled in odd ways (converted to epoch format or replaced with `NaT`).
@@ -75,3 +75,6 @@ timestamp_column = <name of the column containing the rising timestamp>
 format = <format in which to ingest rows - "json" or "dbx">
 interval = <how often in seconds to check for new rows (omit to only ingest once)
 ```
+
+## Acknowledgements
+ * The [Splunk SDK for Python](https://github.com/splunk/splunk-sdk-python) is bundled within this application.
