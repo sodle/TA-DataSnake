@@ -1,14 +1,14 @@
 # Sample table reader input
-# [datasnake_read://<name for the input>]
-# connection = <connection name>
-# query = <SQL query>
-# format = <format in which to ingest rows - "json" or "dbx">
-# interval = <how often in seconds to reread the database (omit to only ingest once)
+[datasnake_read://<name for the input>]
+connection = <connection name>
+query = <SQL query>
+format = <format in which to ingest rows - "json" or "dbx">
+interval = <how often in seconds to reread the database (omit to only ingest once)
 
 # Sample tailing input
-# [datasnake_tail://<name for the input>]
-# connection = <connection name>
-# query = <SQL query>
-# timestamp_column = <name of the column containing the rising timestamp>
-# format = <format in which to ingest rows - "json" or "dbx">
-# interval = <how often in seconds to check for new rows (omit to only ingest once)
+[datasnake_tail://<name for the input>]
+connection = <connection name>
+query = <SQL query>
+timestamp_column = <name of the column containing the rising timestamp>
+format = <format in which to ingest rows - "json" or "dbx">
+interval = <how often in seconds to check for new rows (omit to only ingest once)
