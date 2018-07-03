@@ -1,4 +1,4 @@
-import splunklib
+import splunklib.client
 
 realm_name = 'TA-DataSnake-Checkpoint'
 
@@ -6,7 +6,7 @@ realm_name = 'TA-DataSnake-Checkpoint'
 class CheckpointManager(object):
     def __init__(self, service):
         # type: (splunklib.service) -> None
-        self.service = service
+        self.service = splunklib.client.connect(token=service.token, autologin=True)
 
     def list(self):
         for cred in self.service.storage_passwords:
